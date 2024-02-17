@@ -9,7 +9,11 @@ COPY requirements.txt /app/
 COPY main.py /app/
 COPY index.html /app/
 COPY utils.py /app/
-
+COPY speech_text_speech.py /app/
+COPY models /app/
+COPY hx11 /app/
+COPY audio /app/
+COPY audio_translated /app/
 # Installez les dépendances
 RUN apt-get update && apt-get install -y ffmpeg
 RUN pip install --no-cache-dir -r requirements.txt
