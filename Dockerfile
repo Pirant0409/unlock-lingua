@@ -18,6 +18,7 @@ ADD h11 /app/
 ADD flask_sock /app/
 ADD simple_websocket /app/
 ADD wsproto /app/
+RUN ls
 # Exposez le port que votre application écoute
 EXPOSE 80
 
