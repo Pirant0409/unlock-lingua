@@ -1,6 +1,7 @@
 # Utilisez une image de base
 FROM python:3.9-slim
 
+RUN apt-get update && apt-get install -y ffmpeg
 # Définissez le répertoire de travail
 WORKDIR /app
 
@@ -15,7 +16,6 @@ COPY hx11 /app/
 COPY audio /app/
 COPY audio_translated /app/
 # Installez les dépendances
-RUN apt-get update && apt-get install -y ffmpeg
 RUN pip install --no-cache-dir -r requirements.txt
 # Exposez le port que votre application écoute
 EXPOSE 80
