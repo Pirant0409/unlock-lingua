@@ -8,6 +8,7 @@ WORKDIR /app
 # Copiez les fichiers nécessaires dans le conteneur
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gunicorn
 
 COPY main.py /app/
 COPY index.html /app/
@@ -25,4 +26,4 @@ RUN ls
 EXPOSE 80
 
 # Commande pour démarrer votre application
-CMD ["python", "main.py"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:80", "main:app"]
