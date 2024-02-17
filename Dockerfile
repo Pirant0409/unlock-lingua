@@ -7,6 +7,8 @@ WORKDIR /app
 
 # Copiez les fichiers nécessaires dans le conteneur
 COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY main.py /app/
 COPY index.html /app/
 COPY utils.py /app/
@@ -15,8 +17,6 @@ COPY models /app/
 COPY hx11 /app/
 COPY audio /app/
 COPY audio_translated /app/
-# Installez les dépendances
-RUN pip install --no-cache-dir -r requirements.txt
 # Exposez le port que votre application écoute
 EXPOSE 80
 
