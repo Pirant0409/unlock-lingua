@@ -14,7 +14,7 @@ COPY index.html /app/
 COPY utils.py /app/
 COPY speech_text_speech.py /app/
 COPY models /app/
-COPY hx11 /app/
+COPY h11 /app/
 COPY audio /app/
 COPY audio_translated /app/
 # Exposez le port que votre application écoute
