@@ -17,6 +17,9 @@ COPY models /app/
 COPY h11 /app/
 COPY audio /app/
 COPY audio_translated /app/
+COPY simple_websocket /app/
+COPY wsproto /app/
+COPY flask_sock /app/
 # Exposez le port que votre application écoute
 EXPOSE 80
 
