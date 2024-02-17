@@ -9,5 +9,5 @@ def hexToMp3(audioString):
     audio_bytes_io = BytesIO(newAudioString)
     print("Conversion de l'audio en mp3")
     audio = AudioSegment.from_file(audio_bytes_io)
-    audio.export("./output.mp3", format="mp3")
+    audio.export("./audio/output.mp3", format="mp3")
     print("Audio créé avec succès")
