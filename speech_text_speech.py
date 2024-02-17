@@ -45,6 +45,6 @@ def process_audio_files(audio_directory, output_directory):
         tts.save(output_file)
 
 # Appel de la fonction process_audio_files avec le répertoire audio et le répertoire de sortie
-audio_directory = "C:/Users/theol/Documents/Unamur/Master2/Hackaton/audio"
-output_directory = "C:/Users/theol/Documents/Unamur/Master2/Hackaton"
+audio_directory = "./audio"
+output_directory = "./audio_translated"
 process_audio_files(audio_directory, output_directory)

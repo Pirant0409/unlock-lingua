@@ -1,7 +1,9 @@
 import numpy as np
 import base64
+import speech_text_speech as stt
 from io import BytesIO
 from pydub import AudioSegment
+
 def hexToMp3(audioString):
 
     newAudioString = base64.b64decode(audioString)
@@ -11,3 +13,5 @@ def hexToMp3(audioString):
     audio = AudioSegment.from_file(audio_bytes_io)
     audio.export("./audio/output.mp3", format="mp3")
     print("Audio créé avec succès")
+    stt.process_audio_files("./audio", "./audio_translated")
+    print("Audio traité avec succès")
