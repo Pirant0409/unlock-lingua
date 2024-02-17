@@ -14,10 +14,10 @@ COPY index.html /app/
 COPY utils.py /app/
 COPY speech_text_speech.py /app/
 COPY models /app/
-COPY h11 /app/ 
-COPY flask_sock /app/
-COPY simple_websocket /app/
-COPY wsproto /app/
+ADD h11 /app/ 
+ADD flask_sock /app/
+ADD simple_websocket /app/
+ADD wsproto /app/
 # Exposez le port que votre application écoute
 EXPOSE 80
 
