@@ -17,9 +17,9 @@ COPY models /app/
 COPY h11 /app/
 RUN mkdir -p /app/audio
 RUN mkdir -p /app/audio_translated 
+COPY flask_sock /app/
 COPY simple_websocket /app/
 COPY wsproto /app/
-COPY flask_sock /app/
 # Exposez le port que votre application écoute
 EXPOSE 80
 
