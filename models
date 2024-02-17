@@ -20,6 +20,7 @@ class Cours(db.Model):
 class Word(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     allword = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(100), nullable=False)
     heure = db.Column(db.String(100), nullable=False)
     cours_name = db.Column(db.String(100), db.ForeignKey('cours.name'), nullable=False)
 
@@ -56,7 +57,9 @@ def get_word():
     word = Word.query.all()
     word_list = []
     for w in word:
-        word_list.append({'id': w.id, 'allword': w.allword, 'date': w.date, 'heure': w.heure, 'cours_name': w.cours_name})
+        cours = Cours.query.filter_by(id=w.cours_name).all()
+        cours = cours [0]
+        word_list.append({'id': w.id, 'allword': w.allword, 'date': w.date, 'heure': w.heure, 'cours_name': cours.name})
     return jsonify({'word': word_list})
 
 if __name__ == '__main__':
