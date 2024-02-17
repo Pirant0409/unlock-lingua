@@ -41,7 +41,7 @@ def process_audio_files(audio_directory, output_directory):
 
         # Utiliser gTTS pour générer le fichier audio à partir du texte traduit
         tts = gTTS(translated_text, lang='en')
-        output_file = os.path.join(output_directory, f"{filename.split('.')[0]}_translated.mp3")
+        output_file = os.path.join(output_directory, f"{filename.split('.')[0]}_translated.wav")
         tts.save(output_file)
 
 # Appel de la fonction process_audio_files avec le répertoire audio et le répertoire de sortie
