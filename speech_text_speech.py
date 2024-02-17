@@ -40,11 +40,9 @@ def process_audio_files(audio_directory, output_directory):
         translated_text = translate_text(text, 'fr', 'en')
 
         # Utiliser gTTS pour générer le fichier audio à partir du texte traduit
-        tts = gTTS(translated_text, lang='en')
-        output_file = os.path.join(output_directory, f"{filename.split('.')[0]}_translated.wav")
-        tts.save(output_file)
-
-# Appel de la fonction process_audio_files avec le répertoire audio et le répertoire de sortie
-audio_directory = "./audio"
-output_directory = "./audio_translated"
-process_audio_files(audio_directory, output_directory)
+        if translated_text.replace('.', '') == '':
+            print(f"Le fichier {filename} n'a pas pu être traduit")
+        else:
+            tts = gTTS(translated_text, lang='en')
+            output_file = os.path.join(output_directory, f"{filename.split('.')[0]}_translated.wav")
+            tts.save(output_file)
