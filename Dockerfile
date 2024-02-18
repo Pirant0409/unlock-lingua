@@ -2,7 +2,7 @@
 FROM python:3.9-slim
 
 RUN apt-get update && apt-get install -y ffmpeg
-RUN apt-get install python3-dev default-libmysqlclient-dev build-essential -y
+RUN apt-get install libmysqlclient-dev -y
 # Définissez le répertoire de travail
 WORKDIR /app
 
