@@ -33,11 +33,11 @@ class Word(db.Model):
     heure = db.Column(db.String(100), nullable=False)
     cours_name = db.Column(db.Integer, db.ForeignKey('cours.name'), nullable=False)
 
-@app.route('/')
+@app.route('/api/')
 def index():
     return render_template('./index.html')
 
-@sock.route('/audio_stream')
+@sock.route('/api/audio_stream')
  #@cross-origin()
 def audio_stream(ws):
     while True:
@@ -49,7 +49,7 @@ def audio_stream(ws):
         # Traiter les données audio ici (vous pouvez les enregistrer dans une base de données, etc.)
         hexToMp3(audio_data)
 
-@app.route('/get_file_names', methods=['GET'])
+@app.route('/api/get_file_names', methods=['GET'])
 def get_file_names():
     file_names = []
     for filename in os.listdir("./audio_translated"):
@@ -58,11 +58,11 @@ def get_file_names():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route('/get_audio/<path:filename>')
+@app.route('/api/get_audio/<path:filename>')
 def get_audio(filename):
     return send_from_directory('audio_translated', filename)
 
-@app.route('/del_audio/<path:filename>', methods=['DELETE'])
+@app.route('/api/del_audio/<path:filename>', methods=['DELETE'])
 @cross_origin()
 def del_audio(filename):
     if os.path.exists(f"./audio_translated/{filename}"):
@@ -71,7 +71,7 @@ def del_audio(filename):
     else:
         return jsonify({'error': 'Audio not found'})
 # Définition des routes
-@app.route('/create_cours', methods=['POST'])
+@app.route('/api/create_cours', methods=['POST'])
 @cross_origin()
 def create_cours():
     data = request.get_json()
@@ -80,7 +80,7 @@ def create_cours():
     db.session.commit()
     return jsonify({'message': 'Cours created successfully'})
 
-@app.route('/create_word', methods=['POST'])
+@app.route('/api/create_word', methods=['POST'])
 @cross_origin()
 def create_word():
     data = request.get_json()
@@ -101,7 +101,7 @@ def create_word():
     db.session.commit()
     return jsonify({'message': 'Word created successfully'})
 
-@app.route('/get_cours', methods=['GET'])
+@app.route('/api/get_cours', methods=['GET'])
 def get_cours():
     cours = Cours.query.all()
     cours_list = []
@@ -111,7 +111,7 @@ def get_cours():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route('/get_word', methods=['GET'])
+@app.route('/api/get_word', methods=['GET'])
 @cross_origin(origin='*')
 def get_word():
     word = Word.query.all()
@@ -125,7 +125,7 @@ def get_word():
     return response
 
 
-@app.route('/get_translation', methods=['POST'])
+@app.route('/api/get_translation', methods=['POST'])
 @cross_origin()
 def get_translation():
     # Récupérer les données JSON envoyées dans la requête
