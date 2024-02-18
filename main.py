@@ -6,7 +6,9 @@ from datetime import datetime
 from speech_text_speech import translate_text
 import base64
 import os
+from sqlalchemy.exc import OperationalError
 from utils import hexToMp3
+from time import sleep
 
 app = Flask(__name__)
 CORS(app)
@@ -15,6 +17,9 @@ sock = Sock(app)
 # Configuration de la base de données
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://u602119779_antoi:*1udazPbC@sql713.main-hosting.eu:3306/u602119779_lesmarostin'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_POOL_SIZE'] = 20  # Nombre maximum de connexions dans le pool
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 300  # Durée en secondes avant de recycler une connexion inutilisée
+app.config['SQLALCHEMY_POOL_TIMEOUT'] = 30  # Délai d'attente pour obtenir une connexion du pool
 
 # Initialisation de l'extension SQLAlchemy
 db = SQLAlchemy(app)
@@ -32,6 +37,17 @@ class Word(db.Model):
     date = db.Column(db.String(100), nullable=False)
     heure = db.Column(db.String(100), nullable=False)
     cours_name = db.Column(db.Integer, db.ForeignKey('cours.name'), nullable=False)
+
+
+@app.errorhandler(OperationalError)
+def handle_operational_error(e):
+    print(f"Erreur opérationnelle: {str(e)}")
+    print("Tentative de reconnexion...")
+    db.session.rollback()  # Annuler la transaction actuelle
+    db.session.remove()    # Fermer la session actuelle
+    sleep(5)  # Attendre quelques secondes avant de réessayer
+    return render_template('error.html', error=str(e))
+
 
 @app.route('/api/')
 def index():
@@ -56,16 +72,13 @@ def get_file_names():
     file_names = []
     for filename in os.listdir("./audio_translated"):
         file_names.append(filename)
-    response = jsonify({'file_names': file_names})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    return jsonify({'file_names': file_names})
 
 @app.route('/api/get_audio/<path:filename>')
 def get_audio(filename):
     return send_from_directory('audio_translated', filename)
 
 @app.route('/api/del_audio/<path:filename>', methods=['DELETE'])
-@cross_origin()
 def del_audio(filename):
     if os.path.exists(f"./audio_translated/{filename}"):
         os.remove(f"./audio_translated/{filename}")
@@ -74,7 +87,6 @@ def del_audio(filename):
         return jsonify({'error': 'Audio not found'})
 # Définition des routes
 @app.route('/api/create_cours', methods=['POST'])
-@cross_origin()
 def create_cours():
     data = request.get_json()
     new_cours = Cours(name=data['name'], teacher=data['teacher'])
@@ -83,7 +95,6 @@ def create_cours():
     return jsonify({'message': 'Cours created successfully'})
 
 @app.route('/api/create_word', methods=['POST'])
-@cross_origin()
 def create_word():
     data = request.get_json()
     cours = Cours.query.filter_by(id=data['cours_name']).first()
@@ -110,11 +121,9 @@ def get_cours():
     for c in cours:
         cours_list.append({'id': c.id, 'name': c.name, 'teacher': c.teacher})
     response = jsonify({'cours': cours_list})
-    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 @app.route('/api/get_word', methods=['GET'])
-@cross_origin(origin='*')
 def get_word():
     word = Word.query.all()
     word_list = []
@@ -122,13 +131,10 @@ def get_word():
         cours = Cours.query.filter_by(id=w.cours_name).all()
         cours = cours [0]
         word_list.append({'id': w.id, 'allword': w.allword, 'date': w.date, 'heure': w.heure, 'cours_name': cours.name})
-    response = jsonify({'word': word_list})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    return jsonify({'word': word_list}) 
 
 
 @app.route('/api/get_translation', methods=['POST'])
-@cross_origin()
 def get_translation():
     # Récupérer les données JSON envoyées dans la requête
     data = request.get_json()
