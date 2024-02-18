@@ -5,7 +5,7 @@ import speech_text_speech as stt
 from io import BytesIO
 from pydub import AudioSegment
 
-def hexToMp3(audioString,i):
+def hexToMp3(audioString):
 
     newAudioString = base64.b64decode(audioString)
     print("Decodage de l'audio")
