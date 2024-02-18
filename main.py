@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from speech_text_speech import translate_text
 import base64
+import os
 from utils import hexToMp3
 
 app = Flask(__name__)
@@ -50,8 +51,15 @@ def audio_stream(ws):
 
 @app.route('/get_audio/<path:filename>')
 def get_audio(filename):
-    return send_from_directory('./audio_translated', filename)
+    return send_from_directory('audio_translated', filename)
 
+@app.route('/del_audio/<path:filename>', methods=['DELETE'])
+def del_audio(filename):
+    if os.path.exists(f"./audio_translated/{filename}"):
+        os.remove(f"./audio_translated/{filename}")
+        return jsonify({'message': 'Audio deleted successfully'})
+    else:
+        return jsonify({'error': 'Audio not found'})
 # Définition des routes
 @app.route('/create_cours', methods=['POST'])
 def create_cours():
