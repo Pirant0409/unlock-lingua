@@ -13,9 +13,9 @@ def hexToMp3(audioString):
     audio_bytes_io = BytesIO(newAudioString)
     print("Conversion de l'audio en mp3")
     audio = AudioSegment.from_file(audio_bytes_io)
-    while(os.path.exists("./audio/output"+i+".wav")):
+    while(os.path.exists("./audio/output"+str(i)+".wav")):
         i+=1
-    audio.export("./audio/output"+i+".wav", format="wav")
+    audio.export("./audio/output"+str(i)+".wav", format="wav")
     print("Audio créé avec succès")
     stt.process_audio_files("./audio", "./audio_translated")
     print("Audio traité avec succès")
