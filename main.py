@@ -1,4 +1,4 @@
-from flask import Flask, render_template,jsonify, request
+from flask import Flask, render_template,jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_sock import Sock
 from flask_sqlalchemy import SQLAlchemy
@@ -48,6 +48,9 @@ def audio_stream(ws):
         # Traiter les données audio ici (vous pouvez les enregistrer dans une base de données, etc.)
         hexToMp3(audio_data)
 
+@app.route('/get_audio/<path:filename>')
+def get_audio(filename):
+    return send_from_directory('./audio_translated', filename)
 
 # Définition des routes
 @app.route('/create_cours', methods=['POST'])
