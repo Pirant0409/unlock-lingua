@@ -54,13 +54,16 @@ def get_file_names():
     file_names = []
     for filename in os.listdir("./audio_translated"):
         file_names.append(filename)
-    return jsonify({'file_names': file_names})
+    response = jsonify({'file_names': file_names})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route('/get_audio/<path:filename>')
 def get_audio(filename):
     return send_from_directory('audio_translated', filename)
 
 @app.route('/del_audio/<path:filename>', methods=['DELETE'])
+@cross_origin()
 def del_audio(filename):
     if os.path.exists(f"./audio_translated/{filename}"):
         os.remove(f"./audio_translated/{filename}")
@@ -69,6 +72,7 @@ def del_audio(filename):
         return jsonify({'error': 'Audio not found'})
 # Définition des routes
 @app.route('/create_cours', methods=['POST'])
+@cross_origin()
 def create_cours():
     data = request.get_json()
     new_cours = Cours(name=data['name'], teacher=data['teacher'])
@@ -77,6 +81,7 @@ def create_cours():
     return jsonify({'message': 'Cours created successfully'})
 
 @app.route('/create_word', methods=['POST'])
+@cross_origin()
 def create_word():
     data = request.get_json()
     cours = Cours.query.filter_by(id=data['cours_name']).first()
@@ -102,7 +107,9 @@ def get_cours():
     cours_list = []
     for c in cours:
         cours_list.append({'id': c.id, 'name': c.name, 'teacher': c.teacher})
-    return jsonify({'cours': cours_list})
+    response = jsonify({'cours': cours_list})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route('/get_word', methods=['GET'])
 @cross_origin(origin='*')
@@ -113,10 +120,13 @@ def get_word():
         cours = Cours.query.filter_by(id=w.cours_name).all()
         cours = cours [0]
         word_list.append({'id': w.id, 'allword': w.allword, 'date': w.date, 'heure': w.heure, 'cours_name': cours.name})
-    return jsonify({'word': word_list})
+    response = jsonify({'word': word_list})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/get_translation', methods=['POST'])
+@cross_origin()
 def get_translation():
     # Récupérer les données JSON envoyées dans la requête
     data = request.get_json()

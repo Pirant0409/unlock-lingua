@@ -46,3 +46,4 @@ def process_audio_files(audio_directory, output_directory):
             tts = gTTS(translated_text, lang='en')
             output_file = os.path.join(output_directory, f"{filename.split('.')[0]}_translated.wav")
             tts.save(output_file)
+        os.remove(audio_file)
