@@ -41,12 +41,13 @@ def index():
  #@cross-origin()
 def audio_stream(ws):
     try:
-        audio_data = ws.receive()
-        print("-----Données audio reçues-----\n")
-        print(audio_data)
-        print("\n-----Données audio envoyées-----\n")
-        # Traiter les données audio ici (vous pouvez les enregistrer dans une base de données, etc.)
-        hexToMp3(audio_data)
+        while True:
+            audio_data = ws.receive()
+            print("-----Données audio reçues-----\n")
+            print(audio_data)
+            print("\n-----Données audio envoyées-----\n")
+            # Traiter les données audio ici (vous pouvez les enregistrer dans une base de données, etc.)
+            hexToMp3(audio_data)
     except Exception as e:
         print("Erreur lors du traitement des données audio:", str(e))
 
