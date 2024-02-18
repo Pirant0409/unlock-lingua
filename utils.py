@@ -7,7 +7,7 @@ from pydub import AudioSegment
 
 def hexToMp3(audioString):
 
-    int i = 0
+    i = 0
     newAudioString = base64.b64decode(audioString)
     print("Decodage de l'audio")
     audio_bytes_io = BytesIO(newAudioString)
