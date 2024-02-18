@@ -1,5 +1,6 @@
 from flask import Flask, render_template,jsonify, request, send_from_directory
 from flask_cors import CORS
+from flask.ext.cors import cross_origin
 from flask_sock import Sock
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -105,6 +106,7 @@ def get_cours():
     return jsonify({'cours': cours_list})
 
 @app.route('/get_word', methods=['GET'])
+@cross_origin(origin='*')
 def get_word():
     word = Word.query.all()
     word_list = []
