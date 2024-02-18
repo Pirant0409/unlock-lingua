@@ -14,7 +14,7 @@ COPY main.py /app/
 COPY index.html /app/
 COPY utils.py /app/
 COPY speech_text_speech.py /app/
-COPY models /app/
+COPY models.py /app/
 COPY h11 /app/h11
 COPY flask_sock /app/flask_sock
 COPY simple_websocket /app/simple_websocket
