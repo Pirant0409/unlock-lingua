@@ -7,14 +7,15 @@ from pydub import AudioSegment
 
 def hexToMp3(audioString):
 
+    int i = 0
     newAudioString = base64.b64decode(audioString)
     print("Decodage de l'audio")
     audio_bytes_io = BytesIO(newAudioString)
     print("Conversion de l'audio en mp3")
     audio = AudioSegment.from_file(audio_bytes_io)
-    if os.path.exists("./audio/output.wav"):
-        os.remove("./audio/output.wav")
-    audio.export("./audio/output.wav", format="wav")
+    while(os.path.exists("./audio/output"+i+".wav")):
+        i+=1
+    audio.export("./audio/output"+i+".wav", format="wav")
     print("Audio créé avec succès")
     stt.process_audio_files("./audio", "./audio_translated")
     print("Audio traité avec succès")

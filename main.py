@@ -49,6 +49,13 @@ def audio_stream(ws):
         # Traiter les données audio ici (vous pouvez les enregistrer dans une base de données, etc.)
         hexToMp3(audio_data)
 
+@app.route('/get_file_names', methods=['GET'])
+def get_file_names():
+    file_names = []
+    for filename in os.listdir("./audio_translated"):
+        file_names.append(filename)
+    return jsonify({'file_names': file_names})
+
 @app.route('/get_audio/<path:filename>')
 def get_audio(filename):
     return send_from_directory('audio_translated', filename)
