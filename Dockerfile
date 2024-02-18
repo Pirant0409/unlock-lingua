@@ -27,4 +27,4 @@ COPY main.py /app/
 EXPOSE 80
 
 # Commande pour démarrer votre application
-CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:80","-t","-100","main:app"]
+CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:80","-t","100","main:app"]
