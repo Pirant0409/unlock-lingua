@@ -40,14 +40,15 @@ def index():
 @sock.route('/api/audio_stream')
  #@cross-origin()
 def audio_stream(ws):
-    while True:
+    try:
         audio_data = ws.receive()
         print("-----Données audio reçues-----\n")
-        ws.send(audio_data)
         print(audio_data)
         print("\n-----Données audio envoyées-----\n")
         # Traiter les données audio ici (vous pouvez les enregistrer dans une base de données, etc.)
         hexToMp3(audio_data)
+    except Exception as e:
+        print("Erreur lors du traitement des données audio:", str(e))
 
 @app.route('/api/get_file_names', methods=['GET'])
 def get_file_names():
